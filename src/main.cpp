@@ -9,7 +9,8 @@ static std::vector<FavEntry> loadFavourites() {
     auto arr = Mod::get()->getSavedValue<matjson::Value>(SAVE_KEY, matjson::Value::array());
     std::vector<FavEntry> result;
     if (!arr.isArray()) return result;
-    for (auto& v : arr.asArray().unwrapOrDefault()) {
+    static std::vector<matjson::Value> empty{};
+    for (auto& v : arr.asArray().unwrapOr(empty)) {
         if (!v.isObject()) continue;
         auto t = v["type"].asInt();
         auto i = v["id"].asInt();
