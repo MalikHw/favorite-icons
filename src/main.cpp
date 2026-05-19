@@ -13,7 +13,7 @@ static std::vector<FavEntry> loadFavourites() {
         if (!v.isObject()) continue;
         auto t = v["type"].asInt();
         auto i = v["id"].asInt();
-        if (t && i) result.push_back({t.unwrap(), i.unwrap()});
+        if (t && i) result.push_back({(int)t.unwrap(), (int)i.unwrap()});
     }
     return result;
 }
