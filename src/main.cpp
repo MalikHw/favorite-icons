@@ -6,7 +6,7 @@ using namespace geode::prelude;
 static const char* SAVE_KEY = "favourites";
 struct FavEntry { int type; int id; };
 static std::vector<FavEntry> loadFavourites() {
-    auto arr = Mod::get()->getSavedValue<matjson::Value>(SAVE_KEY, matjson::Value(matjson::Array{}));
+    auto arr = Mod::get()->getSavedValue<matjson::Value>(SAVE_KEY, matjson::Value::array());
     std::vector<FavEntry> result;
     if (!arr.isArray()) return result;
     for (auto& v : arr.asArray().unwrapOrDefault()) {
@@ -18,13 +18,12 @@ static std::vector<FavEntry> loadFavourites() {
     return result;
 }
 static void saveFavourites(const std::vector<FavEntry>& favs) {
-    matjson::Value arr = matjson::Array{};
-    auto& a = arr.asArray().unwrap();
+    auto arr = matjson::Value::array();
     for (auto& e : favs) {
-        matjson::Value obj = matjson::Object{};
+        auto obj = matjson::Value::object();
         obj["type"] = e.type;
         obj["id"] = e.id;
-        a.push_back(obj);
+        arr.asArray().unwrap().push_back(obj);
     }
     Mod::get()->setSavedValue(SAVE_KEY, arr);
 }
